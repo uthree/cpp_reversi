@@ -45,14 +45,14 @@ namespace Reversi
         {
             for (int x = 0; x < 8; x++)
             {
-                board_map[y][x] = Piece::none;
+                board_map[y][x] = none;
             }
         }
         // 最初の４つの石を配置
-        board_map[3][3] = Piece::white;
-        board_map[4][4] = Piece::white;
-        board_map[4][3] = Piece::black;
-        board_map[3][4] = Piece::black;
+        board_map[3][3] = white;
+        board_map[4][4] = white;
+        board_map[4][3] = black;
+        board_map[3][4] = black;
     }
 
     Board::~Board()

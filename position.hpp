@@ -10,6 +10,8 @@ namespace Reversi
         //計算
         Position operator+(Position other);
         Position operator-(Position other);
+        Position operator*(int other);
+        Position operator/(int other);
 
         Position(int x, int y); // コンストラクタ。
     };

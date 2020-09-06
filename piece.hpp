@@ -3,7 +3,7 @@
 #define CR_af0ff4c9_e8a9_4d06_be0c_0b41e04580b6
 namespace Reversi
 {
-    enum Stone
+    enum Piece
     {
         none = 0,
         black = 1,

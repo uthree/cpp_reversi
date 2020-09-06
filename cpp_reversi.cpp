@@ -1,7 +1,7 @@
 #include <iostream>
 
 #include "position.hpp"
-#include "stone.hpp"
+#include "piece.hpp"
 #include "board.cpp"
 
 //インクルードガード

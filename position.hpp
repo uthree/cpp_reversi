@@ -7,9 +7,18 @@ namespace Reversi
     public:
         int x;
         int y;
-        Position operator+();
-        Position operator-();
+        //計算
+        Position operator+(Position other);
+        Position operator-(Position other);
+
+        Position(int x, int y); // コンストラクタ。
     };
+
+    Position::Position(int x_, int y_)
+    {
+        x = x_;
+        y = y_;
+    }
 
 } // namespace Reversi
 

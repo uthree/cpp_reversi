@@ -1,6 +1,6 @@
 #include <vector>
 
-#include "position.hpp"
+#include "position.cpp"
 #include "piece.hpp"
 
 #ifndef CR_89a4880f_edc4_4925_b2dd_349f85b6de33
@@ -12,24 +12,30 @@ namespace Reversi
     {
     private:
         Piece board_map[8][8];
-        const Position eight_directions[8] = {
-            {0, 1},
-            {1, 1},
-            {1, 0},
-            {1, -1},
-            {-1, 1},
-            {0, -1},
-            {-1, 0},
-            {-1, -1},
+        Position eight_directions[8] = {
+            Position(1, 1),
+            Position(0, 1),
+            Position(1, 0),
+            Position(1, -1),
+            Position(-1, 1),
+            Position(-1, -1),
+            Position(-1, 0),
+            Position(0, -1),
+
         };
 
     public:
         Board();
         ~Board();
-        bool Board::checkPlaceable(Position position, Piece piece_color);                    //特定の座標に石を置けるかチェックする。
-        std::vector<Position> Board::searchPlaceableDirections(Position, Piece piece_color); //石を置ける方向をvectorで返す。
-        Piece Board::getPieceFromPosition(Position position);
-        void Place(Position position, Piece piece_color); // 設置処理
+
+        //メソッド
+        bool checkPlaceable(Position position, Piece piece_color);                    //特定の座標に石を置けるかチェックする。
+        std::vector<Position> searchPlaceableDirections(Position, Piece piece_color); //石を置ける方向をvectorで返す。
+        void Place(Position position, Piece piece_color);                             // 設置処理
+
+        //単純なアクセサ群
+        Piece getPiece(Position position);                   //座標からどうなってるか調べる。
+        void setPiece(Position Position, Piece Piece_color); //任意の座標に任意の石を配置する。または石を除去する.
     };
 
     Board::Board()

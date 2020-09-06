@@ -95,6 +95,37 @@ namespace Reversi
         }
     }
 
+    std::string Board::toString() // 盤面を文字列に変換
+    {
+        std::string r = " abcdefgh\n";
+        Piece p;
+        for (int y = 0; y < 8; y++)
+        {
+            r.push_back((char)(y + 1));
+            for (int x = 0; x < 8; x++)
+            {
+                p = getPiece(Position(x, y));
+                switch (p)
+                {
+                case black:
+                    r.push_back('b');
+                    break;
+                case white:
+                    r.push_back('w');
+                    break;
+                case none:
+                    r.push_back('.');
+                    break;
+
+                default:
+                    break;
+                }
+            }
+            r.push_back('\n');
+        }
+        return r;
+    }
+
     Piece Board::getPiece(Position position)
     {
         return board_map[position.y][position.x];

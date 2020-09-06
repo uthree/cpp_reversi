@@ -1,4 +1,5 @@
 #include <vector>
+#include <string>
 
 #include "position.cpp"
 #include "piece.hpp"
@@ -29,13 +30,14 @@ namespace Reversi
         ~Board();
 
         //メソッド
-        bool checkPlaceable(Position position, Piece piece_color);                    //特定の座標に石を置けるかチェックする。
-        std::vector<Position> searchPlaceableDirections(Position, Piece piece_color); //石を置ける方向をvectorで返す。
+        bool checkPlaceable(Position position, Piece piece_color);                    //　特定の座標に石を置けるかチェックする。
+        std::vector<Position> searchPlaceableDirections(Position, Piece piece_color); //　石を置ける方向をvectorで返す。
         void Place(Position position, Piece piece_color);                             // 設置処理
+        std::string toString();                                                       //　文字列化(簡易)
 
         //単純なアクセサ群
-        Piece getPiece(Position position);                   //座標からどうなってるか調べる。
-        void setPiece(Position Position, Piece Piece_color); //任意の座標に任意の石を配置する。または石を除去する.
+        Piece getPiece(Position position);                   //　座標からどうなってるか調べる。
+        void setPiece(Position Position, Piece Piece_color); //　任意の座標に任意の石を配置する。または石を除去する.
     };
 
     Board::Board()

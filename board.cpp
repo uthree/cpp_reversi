@@ -101,7 +101,7 @@ namespace Reversi
         Piece p;
         for (int y = 0; y < 8; y++)
         {
-            r.push_back((char)(y + 1));
+            r += std::to_string(y + 1);
             for (int x = 0; x < 8; x++)
             {
                 p = getPiece(Position(x, y));

@@ -18,7 +18,20 @@ namespace Reversi
 
     Board::Board()
     {
-    }
+        // 盤面を初期化
+        for (int y = 0; y < 8; y++)
+        {
+            for (int x = 0; x < 8; x++)
+            {
+                board_map[y][x] = Stone::none;
+            }
+        }
+        // 最初の４つの石を配置
+        board_map[3][3] = Stone::white;
+        board_map[4][4] = Stone::white;
+        board_map[4][3] = Stone::black;
+        board_map[3][4] = Stone::black;
+        }
 
     Board::~Board()
     {

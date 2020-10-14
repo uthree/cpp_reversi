@@ -15,6 +15,31 @@ namespace Reversi
             return true;
         return false;
     }
+    bool Board::checkPlaceableAnywhere(Piece color)
+    {
+        for (int y = 0; y < 7; y++)
+        {
+            for (int x = 0; x < 7; x++)
+            {
+                if (checkPlaceable(Position(x, y), color))
+                    return true;
+            }
+        }
+        return false;
+    }
+    int Board::countPiece(Piece color)
+    {
+        int r = 0;
+        for (int y = 0; y < 7; y++)
+        {
+            for (int x = 0; x < 7; x++)
+            {
+                if (this->getPiece(Position(x, y)) == color)
+                    r++;
+            }
+        }
+        return r;
+    }
     std::vector<Position> Board::searchPlaceableDirections(Position pos, Piece color)
     {
         //ベクトルを初期化

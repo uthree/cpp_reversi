@@ -12,6 +12,7 @@ int main()
     cout << b.toString() << endl;
     b.place(Position(2, 3), black);
     cout << b.toString() << endl;
+    cout << b.countPiece(black) << endl;
 
     printf("正常終了");
     return 0;

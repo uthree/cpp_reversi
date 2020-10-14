@@ -11,7 +11,7 @@ int main()
     b.place(Position(3, 5), white);
     cout << b.toString() << endl;
     b.place(Position(2, 3), black);
-    cout << b.toString() << endl;
+    cout << b.toString(white) << endl;
     cout << b.countPiece(black) << endl;
     cout << b.searchPlaceablePositions(white).size() << endl;
     auto v = b.searchPlaceablePositions(white);

@@ -40,16 +40,15 @@ namespace Reversi
         }
         return r;
     }
-    std::vector<Position> Board::searchPlaceablePositions(Piece color)
+    std::vector<Position> Board::searchPlaceablePositions(Piece color) // なんか知らんが二倍の値が出てくる。
     {
         std::vector<Position> r;
         for (int y = 0; y < 7; y++)
         {
             for (int x = 0; x < 7; x++)
             {
-                Position pos = Position(x, y);
-                if (this->checkPlaceable(pos, color))
-                    r.push_back(pos);
+                if (this->checkPlaceable(Position(x, y), color))
+                    r.push_back(Position(x, y));
             }
         }
         return r;
@@ -58,7 +57,7 @@ namespace Reversi
     {
         //ベクトルを初期化
         std::vector<Position> placeable_directions;
-
+        bool flag = false;
         //　相手の色を確認しておく。
         Piece enemy_color;
         if (color == black)
@@ -77,6 +76,7 @@ namespace Reversi
             Position direction = eight_directions[i]; //今調べてる方向
 
             //端まで行くか置きたい色と同じ色が検出されるか何もないところに当たるまで
+            flag = false;
             for (int d = 1; d < 8; d++)
             {
                 Position checkpos = direction * d + pos;
@@ -95,11 +95,13 @@ namespace Reversi
                 // 相手の色見つけた
                 if (getPiece(checkpos) == enemy_color)
                 {
+                    flag = true;
                 }
                 //2回目のループ、かつ自分の色がきたら設置可能な方向とする。
-                if (getPiece(checkpos) == color && d >= 2)
+                if (getPiece(checkpos) == color && d >= 2 && flag == true)
                 {
                     placeable_directions.push_back(direction); //戻り値に追加。
+                    //std::cout << direction.x << " " << direction.y << std::endl;
                     break;
                 }
             }
@@ -165,6 +167,40 @@ namespace Reversi
 
                 default:
                     break;
+                }
+            }
+            r.push_back('\n');
+        }
+        return r;
+    }
+
+    std::string Board::toString(Piece guide) // 盤面を文字列に変換(ガイド付き)
+    {
+        std::string r = " abcdefgh\n";
+        Piece p;
+        for (int y = 0; y < 8; y++)
+        {
+            r += std::to_string(y + 1);
+            for (int x = 0; x < 8; x++)
+            {
+                p = getPiece(Position(x, y));
+                switch (p)
+                {
+                case black:
+                    r.push_back('b');
+                    break;
+                case white:
+                    r.push_back('w');
+                    break;
+                case none:
+                    if (this->checkPlaceable(Position(x, y), guide))
+                    {
+                        r.push_back(':');
+                    }
+                    else
+                    {
+                        r.push_back('.');
+                    }
                 }
             }
             r.push_back('\n');

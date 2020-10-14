@@ -30,13 +30,13 @@ namespace Reversi
         ~Board();
 
         //メソッド
-        bool checkPlaceable(Position position, Piece piece_color);                      //　特定の座標に石を置けるかチェックする。
-        std::vector<Position> searchPlaceableDirections(Position, Piece piece_color);   //　石を置ける方向をvectorで返す。
-        void place(Position position, Piece piece_color);                               // 設置処理
-        std::string toString();                                                         //　文字列化(簡易)
-        bool checkPlaceableAnywhere(Piece color);                                       //どこかに置くことができるか調べる(falseだったらどこにもおけない。)
-        int countPiece(Piece color);                                                    // 石の数を数える。
-        std::vector<Position> searchPlaceablePositions(Position position, Piece color); // 設置可能な位置を列挙
+        bool checkPlaceable(Position position, Piece piece_color);                    //　特定の座標に石を置けるかチェックする。
+        std::vector<Position> searchPlaceableDirections(Position, Piece piece_color); //　石を置ける方向をvectorで返す。
+        void place(Position position, Piece piece_color);                             // 設置処理
+        std::string toString();                                                       //　文字列化(簡易)
+        bool checkPlaceableAnywhere(Piece color);                                     //どこかに置くことができるか調べる(falseだったらどこにもおけない。)
+        int countPiece(Piece color);                                                  // 石の数を数える。
+        std::vector<Position> searchPlaceablePositions(Piece color);                  // 設置可能な位置を列挙
 
         //単純なアクセサ群
         Piece getPiece(Position position);                   //　座標からどうなってるか調べる。

@@ -81,10 +81,6 @@ namespace Reversi
             {
 
                 Position checkpos = pos + direction * d;
-                std::cout << checkpos.x << checkpos.y << std::endl;
-                //checkpos.y = checkpos.y + 1;
-                //std::cout << "a" << std::endl;
-                //std::cout << checkpos.x << checkpos.y << std::endl;
 
                 Piece checkcol = getPiece(checkpos);
 
@@ -94,13 +90,12 @@ namespace Reversi
                 if (checkpos.y > 7 || checkpos.y < 0)
                     break;
 
-                std::cout << "b" << std::endl;
                 if (checkcol == color && d >= 1) //自分の色だったらループ抜ける
                     break;
-                std::cout << "c" << std::endl;
+
                 if (checkcol == none) // 何もなかったらループ抜ける
                     break;
-                std::cout << "d" << std::endl;
+
                 //結果的に相手の色の場合のみ以下の処理が実行されるので、ひっくり返す(自分の色にする。)。
                 setPiece(checkpos, color);
             }

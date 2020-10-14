@@ -8,5 +8,11 @@ int main()
     Board b = Board();
     cout << "test" << endl;
     cout << b.toString() << endl;
+    b.place(Position(3, 5), white);
+    cout << b.toString() << endl;
+    b.place(Position(2, 3), black);
+    cout << b.toString() << endl;
+
+    printf("正常終了");
     return 0;
 }

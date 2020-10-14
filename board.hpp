@@ -32,7 +32,7 @@ namespace Reversi
         //メソッド
         bool checkPlaceable(Position position, Piece piece_color);                    //　特定の座標に石を置けるかチェックする。
         std::vector<Position> searchPlaceableDirections(Position, Piece piece_color); //　石を置ける方向をvectorで返す。
-        void Place(Position position, Piece piece_color);                             // 設置処理
+        void place(Position position, Piece piece_color);                             // 設置処理
         std::string toString();                                                       //　文字列化(簡易)
 
         //単純なアクセサ群

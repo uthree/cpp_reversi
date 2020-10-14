@@ -1,3 +1,5 @@
+#include <iostream>
+
 #include "board.hpp"
 
 #ifndef CR_8bd0d938_8918_4e2e_8ee7_64419c741770
@@ -34,7 +36,6 @@ namespace Reversi
         for (int i = 0; i < 8; i++)
         {
             Position direction = eight_directions[i]; //今調べてる方向
-            bool flag = false;                        //フラグ
 
             //端まで行くか置きたい色と同じ色が検出されるか何もないところに当たるまで
             for (int d = 1; d < 8; d++)
@@ -46,16 +47,18 @@ namespace Reversi
                     break;
                 if (checkpos.y > 7 || checkpos.y < 0)
                     break;
-                //何もないのでループを抜ける
+                //何もない
                 if (getPiece(checkpos) == none)
+                {
                     break;
-                //相手の色ならフラグを有効にする。
+                }
+
+                // 相手の色見つけた
                 if (getPiece(checkpos) == enemy_color)
                 {
-                    flag = true;
                 }
-                //フラグが立っていて、かつ自分の色がきたら設置可能な方向とする。
-                if (getPiece(checkpos) == color && flag)
+                //2回目のループ、かつ自分の色がきたら設置可能な方向とする。
+                if (getPiece(checkpos) == color && d >= 2)
                 {
                     placeable_directions.push_back(direction); //戻り値に追加。
                     break;
@@ -66,7 +69,7 @@ namespace Reversi
         return placeable_directions;
     }
 
-    void Board::Place(Position pos, Piece color) //設置処理。 checkPlaceableがtrueになっていることが前提。
+    void Board::place(Position pos, Piece color) //設置処理。 checkPlaceableがtrueになっていることが前提。
     {
         std::vector<Position> placeable_directions = searchPlaceableDirections(pos, color);
         int size = placeable_directions.size();
@@ -76,8 +79,14 @@ namespace Reversi
             Position direction = placeable_directions[i];
             for (int d = 1; d < 8; d++)
             {
-                Position checkpos = direction * d + pos;
-                Piece checkcol = getPiece(pos);
+
+                Position checkpos = pos + direction * d;
+                std::cout << checkpos.x << checkpos.y << std::endl;
+                //checkpos.y = checkpos.y + 1;
+                //std::cout << "a" << std::endl;
+                //std::cout << checkpos.x << checkpos.y << std::endl;
+
+                Piece checkcol = getPiece(checkpos);
 
                 // 端の場合はループを抜ける
                 if (checkpos.x > 7 || checkpos.x < 0)
@@ -85,10 +94,13 @@ namespace Reversi
                 if (checkpos.y > 7 || checkpos.y < 0)
                     break;
 
-                if (checkcol == color) //自分の色だったらループ抜ける
+                std::cout << "b" << std::endl;
+                if (checkcol == color && d >= 1) //自分の色だったらループ抜ける
                     break;
+                std::cout << "c" << std::endl;
                 if (checkcol == none) // 何もなかったらループ抜ける
                     break;
+                std::cout << "d" << std::endl;
                 //結果的に相手の色の場合のみ以下の処理が実行されるので、ひっくり返す(自分の色にする。)。
                 setPiece(checkpos, color);
             }
@@ -128,11 +140,19 @@ namespace Reversi
 
     Piece Board::getPiece(Position position)
     {
+        //std::cout << "getPiece" << position.x << position.y << std::endl;
+        //範囲外へのアクセスを防ぐ
+        if (position.x > 7 || position.x < 0 || position.y > 7 || position.y < 0)
+            throw "範囲外にアクセスしようとするな。";
         return board_map[position.y][position.x];
     }
 
     void Board::setPiece(Position position, Piece piece)
     {
+        //std::cout << "setPiece" << position.x << position.y << std::endl;
+        //範囲外へのアクセスを防ぐ
+        if (position.x > 7 || position.x < 0 || position.y > 7 || position.y < 0)
+            throw "範囲外にアクセスしようとするな。";
         board_map[position.y][position.x] = piece;
     }
 } // namespace Reversi

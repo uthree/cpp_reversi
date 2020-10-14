@@ -7,11 +7,11 @@ namespace Reversi
     //ベクトルの加算減算に近いもの
     Position Position::operator+(Position other)
     {
-        return Position(x + other.x, x + other.x);
+        return Position(x + other.x, y + other.y);
     }
     Position Position::operator-(Position other)
     {
-        return Position(x - other.x, x - other.x);
+        return Position(x - other.x, y - other.y);
     }
     // ベクトルのスカラー倍みたいなもの。
     Position Position::operator*(int other)

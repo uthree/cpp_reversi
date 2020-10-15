@@ -1,6 +1,7 @@
 #include <iostream>
 
 #include "board.hpp"
+#include "cpp_reversi.cpp"
 
 #ifndef CR_8bd0d938_8918_4e2e_8ee7_64419c741770
 #define CR_8bd0d938_8918_4e2e_8ee7_64419c741770
@@ -26,6 +27,10 @@ namespace Reversi
             }
         }
         return false;
+    }
+    bool Board::checkPlaceableAnywhere()
+    {
+        return (checkPlaceableAnywhere(white) || checkPlaceableAnywhere(black));
     }
     int Board::countPiece(Piece color)
     {
@@ -156,16 +161,17 @@ namespace Reversi
                 switch (p)
                 {
                 case black:
-                    r.push_back('b');
+                    r.append(piece_black_str);
                     break;
                 case white:
-                    r.push_back('w');
+                    r.append(piece_white_str);
                     break;
                 case none:
-                    r.push_back('.');
+                    r.append(piece_none_str);
                     break;
 
                 default:
+                    r.append("NULL");
                     break;
                 }
             }
@@ -187,20 +193,24 @@ namespace Reversi
                 switch (p)
                 {
                 case black:
-                    r.push_back('b');
+                    r.append(piece_black_str);
                     break;
                 case white:
-                    r.push_back('w');
+                    r.append(piece_white_str);
                     break;
                 case none:
                     if (this->checkPlaceable(Position(x, y), guide))
                     {
-                        r.push_back(':');
+                        r.append(piece_placeable_str);
                     }
                     else
                     {
-                        r.push_back('.');
+                        r.append(piece_none_str);
                     }
+                    break;
+                default:
+                    r.append("NULL");
+                    break;
                 }
             }
             r.push_back('\n');

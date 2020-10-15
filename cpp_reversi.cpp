@@ -7,7 +7,10 @@
 
 #include "position.hpp"
 #include "piece.hpp"
+#include "board.hpp"
 #include "board.cpp"
 #include "position.cpp"
+#include "ai.hpp"
+#include "ai.cpp"
 
 #endif

@@ -14,12 +14,19 @@ namespace Reversi
         Position operator/(int other);
 
         Position(int x, int y); // コンストラクタ。
+        Position();             //コンストラクタの引数なしのオーバーライド
     };
 
     Position::Position(int x_, int y_)
     {
         x = x_;
         y = y_;
+    }
+
+    Position::Position()
+    {
+        x = 0;
+        y = 0;
     }
 
 } // namespace Reversi

@@ -12,6 +12,7 @@ namespace Reversi
         Position operator-(Position other);
         Position operator*(int other);
         Position operator/(int other);
+        bool operator==(Position other);
 
         Position(int x, int y); // コンストラクタ。
         Position();             //コンストラクタの引数なしのオーバーライド

@@ -24,6 +24,12 @@ namespace Reversi
         return Position(x / other, y / other);
     }
 
+    //比較演算
+    bool Position::operator==(Position other) const
+    {
+        return (x == other.x && y == other.y);
+    }
+
 } // namespace Reversi
 
 #endif

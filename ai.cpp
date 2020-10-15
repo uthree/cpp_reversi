@@ -76,6 +76,26 @@ namespace Reversi
         return r / (count * 2); //平均値にする。
     }
 
+    Position AI::search_best_position(Board board, Piece color, int count)
+    {
+        std::vector<Position> placeable_positions = board.searchPlaceablePositions(color);
+        Position best_position;
+        float best_score = -999999;
+        for (int i = 0; i < placeable_positions.size(); i++)
+        {
+            Board b = Board(board); //boardをコピー
+            Position p = placeable_positions[i];
+            b.place(p, color);
+            float s = this->evaluate_board(b, color, count);
+            if (best_score <= s)
+            {
+                best_score = s;
+                best_position = p;
+            }
+        }
+        return best_position;
+    }
+
     Piece AI::getEnemyColor(Piece color)
     {
         if (color == black)

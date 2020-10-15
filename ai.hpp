@@ -12,11 +12,13 @@ namespace Reversi
         {
             evaluation_function = efunc; //評価関数ポインタを代入。
         }
-        float evaluate_position(Board board, Position position, Piece color); //1マスを評価する。
-        float evaluate_board(Board board, Piece color, int count);            //ボード全体を評価する
+        float evaluate_position(Board board, Position position, Piece color);    //1マスを評価する。
+        float evaluate_board(Board board, Piece color, int count = 64);          //ボード全体を評価する (intは何手先まで読むか)
+        Position search_best_position(Board board, Piece color, int count = 64); //最適な位置を探索(計算)する (intは何手先まで読むか)
 
     private:
-        static Piece getEnemyColor(Piece color); // 相手側の色を返す。
+        static Piece
+        getEnemyColor(Piece color); // 相手側の色を返す。
     };
 } // namespace Reversi
 #endif

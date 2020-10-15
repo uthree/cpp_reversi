@@ -12,7 +12,7 @@ namespace Reversi
     {
         //TODO: 最適化
         auto direction = searchPlaceableDirections(pos, color);
-        if (direction.size() > 0)
+        if (direction.size() > 0 && this->getPiece(pos) == none)
             return true;
         return false;
     }
@@ -101,6 +101,10 @@ namespace Reversi
                 if (getPiece(checkpos) == enemy_color)
                 {
                     flag = true;
+                }
+                if (getPiece(checkpos) == color && flag == false) //自分と同じ色でfagがfalse
+                {
+                    break; //ひっくり返せないので無視する。
                 }
                 //2回目のループ、かつ自分の色がきたら設置可能な方向とする。
                 if (getPiece(checkpos) == color && d >= 2 && flag == true)
@@ -202,6 +206,48 @@ namespace Reversi
                     if (this->checkPlaceable(Position(x, y), guide))
                     {
                         r.append(piece_placeable_str);
+                    }
+                    else
+                    {
+                        r.append(piece_none_str);
+                    }
+                    break;
+                default:
+                    r.append("NULL");
+                    break;
+                }
+            }
+            r.push_back('\n');
+        }
+        return r;
+    }
+
+    std::string Board::toString(Piece guide, Position cursor)
+    {
+        std::string r = " abcdefgh\n";
+        Piece p;
+        for (int y = 0; y < 8; y++)
+        {
+            r += std::to_string(y + 1);
+            for (int x = 0; x < 8; x++)
+            {
+                p = getPiece(Position(x, y));
+                switch (p)
+                {
+                case black:
+                    r.append(piece_black_str);
+                    break;
+                case white:
+                    r.append(piece_white_str);
+                    break;
+                case none:
+                    if (this->checkPlaceable(Position(x, y), guide))
+                    {
+                        r.append(piece_placeable_str);
+                    }
+                    else if (x == cursor.x && y == cursor.y)
+                    {
+                        r.append(cursor_str);
                     }
                     else
                     {

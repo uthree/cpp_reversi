@@ -26,6 +26,7 @@ namespace Reversi
         std::string piece_black_str;
         std::string piece_white_str;
         std::string piece_placeable_str;
+        std::string cursor_str;
 
     public:
         Board();
@@ -37,7 +38,8 @@ namespace Reversi
         std::vector<Position> searchPlaceableDirections(Position position, Piece piece_color); //　石を置ける方向をvectorで返す。
         void place(Position position, Piece piece_color);                                      // 設置処理
         std::string toString();                                                                //文字列化 (ガイドなし)
-        std::string toString(Piece guide);                                                     //　文字列化(ガイド付き)
+        std::string toString(Piece guide_color);                                               //　文字列化(ガイド付き)
+        std::string toString(Piece guide_color, Position cursor);                              // 文字列化(カーソル, ガイド付き)
         bool checkPlaceableAnywhere(Piece color);                                              //どこかに置くことができるか調べる(falseだったらどこにもおけない。)、色指定
         bool checkPlaceableAnywhere();                                                         //どこかに置くことができるか調べる(色は問わない。)
         int countPiece(Piece color);                                                           // 石の数を数える。
@@ -71,6 +73,7 @@ namespace Reversi
         piece_white_str = "\e[0m\e[42m\e[37mw\e[0m";
         piece_none_str = "\e[0m\e[42m \e[0m";
         piece_placeable_str = "\e[0m\e[42m\e[33m.\e[0m";
+        cursor_str = "\e[0m\e[42m\e[33m@\e[0m";
     }
 
     Board::Board(const Board &other)

@@ -12,21 +12,22 @@ namespace Reversi
     {
         count--;
         float r = 0.0;
+        Piece enemy_color = getEnemyColor(color); //相手の色を取得
 
         // std::cout << board.toString(color) << std::endl;
         //自分側
-        if (count > 0 && board.checkPlaceableAnywhere())
+        if (count > 0 && board.checkPlaceableAnywhere(color))
         {
             //自分の最善手を探索。
-            Position best_position;                                                               // 最善の位置
-            float now_value = -1000.0;                                                            // 最大値になるようにする。
+            float now_value = -65535;                                                             // 最大値になるようにする。
             std::vector<Position> my_placeable_positions = board.searchPlaceablePositions(color); // 自分が置ける場所全てを列挙
+            Position best_position = my_placeable_positions[0];                                   // 最善の位置
 
             for (int i = 0; i < my_placeable_positions.size(); i++)
             {
                 Board b = Board(board);
                 b.place(my_placeable_positions[i], color); // とりあえず設置してみる。
-                float v = evaluation_function(b, color);   // 評価
+                float v = (evaluation_function(b, color)); // 評価
                 if (now_value <= v)
                 { //最大値にしたいのでこう
                     now_value = v;
@@ -43,35 +44,34 @@ namespace Reversi
 
         // std::cout << board.toString(getEnemyColor(color)) << std::endl;
         //相手側
-        if (count > 0 && board.checkPlaceableAnywhere())
+        if (count > 0 && board.checkPlaceableAnywhere(enemy_color))
         {
-            Piece enemy_color = getEnemyColor(color); //相手の色を取得
             //相手側の最善手を探索
             std::vector<Position> enemy_placeable_positions = board.searchPlaceablePositions(enemy_color); //相手が置ける場所全てを列挙
-            Position best_position;
-            float now_value = 65535; // 最小値を入れるようにする。
+            Position best_position = enemy_placeable_positions[0];
+            float now_value = 65535; // 最小値になってほしい
 
             for (int i = 0; i < enemy_placeable_positions.size(); i++)
             {
                 Board b = Board(board);
-                b.place(enemy_placeable_positions[i], enemy_color); //とりあえず設置してみる。
-                float v = 0 - evaluation_function(b, enemy_color);  //評価する(負の値に変える。)
+                b.place(enemy_placeable_positions[i], enemy_color);    //とりあえず設置してみる。
+                float v = (0 - (evaluation_function(b, color))) * 0.8; //評価する(負の値に変える。)
                 if (now_value >= v)
                 { // 最小値にしたいのでこうする
                     now_value = v;
                     best_position = enemy_placeable_positions[i];
                 }
             }
-            board.place(best_position, enemy_color); // 設置を確定。
-            r += now_value;                          //加算。
-            r += this->evaluate_board(board, color, count);
+            board.place(best_position, enemy_color);            // 設置を確定。
+            r += now_value;                                     //加算する。
+            r += this->evaluate_board(board, color, count) / 3; //再起的に計算
         }
         else
         {
             return r;
         }
 
-        return r / (count * 2); //平均値にする。
+        return r;
     }
 
     Position AI::predict_best_position(Board board, Piece color, int count)
@@ -91,7 +91,6 @@ namespace Reversi
                 best_position = p;
             }
         }
-        std::cout << best_score << std::endl;
         return best_position;
     }
 

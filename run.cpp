@@ -62,7 +62,7 @@ namespace ScoreMap
 // マス単位での評価関数
 float evaluate_cell_types(Board board, Piece color)
 {
-    const float score_a = 1;
+    const float score_a = 1.0;
     const float score_b = -0.9;
     const float score_c = -0.2;
     const float score_d = -0.8;
@@ -85,7 +85,7 @@ float evaluate_cell_types(Board board, Piece color)
                     if (c == color)
                         r += score_a;
                     else if (c == none)
-                        r -= score_a / 10;
+                        r -= score_a * 0.0;
                     else
                         r -= score_a;
                 }
@@ -101,7 +101,7 @@ float evaluate_cell_types(Board board, Piece color)
                     if (c == color)
                         r += score_b;
                     else if (c == none)
-                        r -= score_b / 10;
+                        r -= score_b * 0.0;
                     else
                         r -= score_b;
                 }
@@ -117,7 +117,7 @@ float evaluate_cell_types(Board board, Piece color)
                     if (c == color)
                         r += score_c;
                     else if (c == none)
-                        r -= score_c / 10;
+                        r -= score_c * 0.0;
                     else
                         r -= score_c;
                 }
@@ -133,7 +133,7 @@ float evaluate_cell_types(Board board, Piece color)
                     if (c == color)
                         r += score_d;
                     else if (c == none)
-                        r -= score_d / 10;
+                        r -= score_d * 0.0;
                     else
                         r -= score_d;
                 }
@@ -149,7 +149,7 @@ float evaluate_cell_types(Board board, Piece color)
                     if (c == color)
                         r += score_e;
                     else if (c == none)
-                        r -= score_e / 10;
+                        r -= score_e * 0.0;
                     else
                         r -= score_e;
                 }
@@ -164,14 +164,14 @@ float evaluate_cell_types(Board board, Piece color)
                     if (c == color)
                         r += score_f;
                     else if (c == none)
-                        r -= score_f / 10;
+                        r -= score_f * 0.0;
                     else
                         r -= score_f;
                 }
             }
         }
     }
-    return r;
+    return r / 40;
 }
 
 using namespace Reversi; // 評価関数を定義
@@ -190,10 +190,12 @@ int main()
 {
     Board board;           // 初期化
     AI ai = AI(&evaluate); // AI初期化
+    ai.magnifcation = 0.8;
 
     while (board.checkPlaceableAnywhere()) //どちらかが設置不可能になるまで繰り返す。
     {
-        cout << round(ai.evaluate_board(board, white) * 100) / 100 << endl;
+        // 評価値
+        cout << "EV: " << round(ai.evaluate_board(board, white) * 100) / 100 << endl;
         cout << board.toString(black) << endl;
     label_input:
         string s;
@@ -225,11 +227,15 @@ int main()
             break;
         board.place(Position(x, y), black);
         cout << board.toString(white) << endl;
-        board.place(ai.predict_best_position(board, white, 32), white);
+        Position pos = ai.predict_best_position(board, white, 20);
+        cout << "AI_ANS:" << pos.x << pos.y << endl;
+        board.place(pos, white);
     }
     //勝利判定
     int count_black = board.countPiece(black);
     int count_white = board.countPiece(white);
+
+    cout << board.toString(black) << endl;
 
     cout << "黒: " << count_black << endl;
     cout << "白: " << count_white << endl;

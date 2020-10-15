@@ -32,7 +32,7 @@ namespace Reversi
                 { //最大値にしたいのでこう
                     now_value = v;
                     best_position = my_placeable_positions[i];
-                    std::cout << "MAX FND" << v << std::endl;
+                    //std::cout << "MAX FND" << v << std::endl;
                 }
             }
             board.place(best_position, color); //設置を確定
@@ -61,7 +61,7 @@ namespace Reversi
                 { // 最小値にしたいのでこうする
                     now_value = v;
                     best_position = enemy_placeable_positions[i];
-                    std::cout << "MIN FND" << v << std::endl;
+                    //  "MIN FND" << v << std::endl;
                 }
             }
             board.place(best_position, enemy_color);                       // 設置を確定。

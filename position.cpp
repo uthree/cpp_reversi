@@ -25,9 +25,10 @@ namespace Reversi
     }
 
     //比較演算
-    bool Position::operator==(Position other) const
+    bool Position::operator==(Position other)
     {
-        return (x == other.x && y == other.y);
+        return true;
+        //return (x == other.x && y == other.y);
     }
 
 } // namespace Reversi

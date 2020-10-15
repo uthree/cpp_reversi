@@ -221,10 +221,11 @@ int main()
             cout << "そこには置けません。" << endl;
             goto label_input;
         }
-
+        if (!board.checkPlaceableAnywhere())
+            break;
         board.place(Position(x, y), black);
         cout << board.toString(white) << endl;
-        board.place(ai.predict_best_position(board, white, 5), white);
+        board.place(ai.predict_best_position(board, white, 32), white);
     }
     //勝利判定
     int count_black = board.countPiece(black);

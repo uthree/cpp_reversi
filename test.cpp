@@ -12,11 +12,16 @@ using namespace Reversi;
 using namespace std;
 int main()
 {
-    Board board; // 初期化
-    AI ai = AI(&evaluate);
-    cout << ai.evaluate_board(board, black, 64) << endl;
-    cout << "RESULT" << endl;
-    cout << board.toString() << endl;
+    Board board;           // 初期化
+    AI ai = AI(&evaluate); // AI初期化
+
+    while (board.checkPlaceableAnywhere()) //どちらかが設置不可能になるまで繰り返す。
+    {
+        cout << board.toString(black) << endl;
+        board.place(ai.predict_best_position(board, black), black);
+        cout << board.toString(white) << endl;
+        board.place(ai.predict_best_position(board, white), white);
+    }
 }
 
 void clear_screen()

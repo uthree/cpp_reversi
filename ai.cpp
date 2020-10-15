@@ -38,7 +38,6 @@ namespace Reversi
         }
         else
         {
-            std::cout << "RETURN MYCOLOR" << std::endl;
             return r;
         }
 
@@ -69,14 +68,13 @@ namespace Reversi
         }
         else
         {
-            std::cout << "RETURN ENMYCOLOR" << std::endl;
             return r;
         }
 
         return r / (count * 2); //平均値にする。
     }
 
-    Position AI::search_best_position(Board board, Piece color, int count)
+    Position AI::predict_best_position(Board board, Piece color, int count)
     {
         std::vector<Position> placeable_positions = board.searchPlaceablePositions(color);
         Position best_position;

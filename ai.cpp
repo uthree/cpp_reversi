@@ -49,7 +49,7 @@ namespace Reversi
             //相手側の最善手を探索
             std::vector<Position> enemy_placeable_positions = board.searchPlaceablePositions(enemy_color); //相手が置ける場所全てを列挙
             Position best_position;
-            float now_value = 1000.0; // 最小値を入れるようにする。
+            float now_value = 65535; // 最小値を入れるようにする。
 
             for (int i = 0; i < enemy_placeable_positions.size(); i++)
             {
@@ -78,7 +78,7 @@ namespace Reversi
     {
         std::vector<Position> placeable_positions = board.searchPlaceablePositions(color);
         Position best_position;
-        float best_score = -999999;
+        float best_score = -65535; //最大値になるようにする
         for (int i = 0; i < placeable_positions.size(); i++)
         {
             Board b = Board(board); //boardをコピー
@@ -91,6 +91,7 @@ namespace Reversi
                 best_position = p;
             }
         }
+        std::cout << best_score << std::endl;
         return best_position;
     }
 

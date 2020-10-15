@@ -1,3 +1,5 @@
+// 超簡易型AIでのテスト。
+
 #include "cpp_reversi.cpp"
 #include <iostream>
 #include <unistd.h>
@@ -55,13 +57,8 @@ namespace ScoreMap
     };
 } // namespace ScoreMap
 
-using namespace Reversi; // 評価関数を定義
-float evaluate(Board board, Piece color)
-{
-    float count = (float)board.countPiece(color) / 64;
-}
-
-float evaluate_cell_types(Board, Piece color)
+// マス単位での評価関数
+float evaluate_cell_types(Board board, Piece color)
 {
     const float score_a = 1;
     const float score_b = 0.1;
@@ -79,14 +76,109 @@ float evaluate_cell_types(Board, Piece color)
             // SCORE TYPE A
             for (int i = 0; i < 4; i++)
             {
-                if (ScoreMap::a[i] == Position(x, y))
+                Position p = ScoreMap::a[i];
+                if (p.x == x && p.y == y)
                 {
-                    r += score_a;
+                    Piece c = board.getPiece(Position(x, y));
+                    if (c == color)
+                        r += score_a;
+                    else if (c == none)
+                        r += 0.0;
+                    else
+                        r -= score_a;
+                }
+            }
+
+            // SCORE TYPE B
+            for (int i = 0; i < 4; i++)
+            {
+                Position p = ScoreMap::b[i];
+                if (p.x == x && p.y == y)
+                {
+                    Piece c = board.getPiece(Position(x, y));
+                    if (c == color)
+                        r += score_b;
+                    else if (c == none)
+                        r += 0.0;
+                    else
+                        r -= score_b;
+                }
+            }
+
+            // SCORE TYPE C
+            for (int i = 0; i < 4; i++)
+            {
+                Position p = ScoreMap::c[i];
+                if (p.x == x && p.y == y)
+                {
+                    Piece c = board.getPiece(Position(x, y));
+                    if (c == color)
+                        r += score_c;
+                    else if (c == none)
+                        r += 0.0;
+                    else
+                        r -= score_c;
+                }
+            }
+
+            // SCORE TYPE D
+            for (int i = 0; i < 4; i++)
+            {
+                Position p = ScoreMap::d[i];
+                if (p.x == x && p.y == y)
+                {
+                    Piece c = board.getPiece(Position(x, y));
+                    if (c == color)
+                        r += score_d;
+                    else if (c == none)
+                        r += 0.0;
+                    else
+                        r -= score_d;
+                }
+            }
+
+            // SCORE TYPE E
+            for (int i = 0; i < 4; i++)
+            {
+                Position p = ScoreMap::e[i];
+                if (p.x == x && p.y == y)
+                {
+                    Piece c = board.getPiece(Position(x, y));
+                    if (c == color)
+                        r += score_e;
+                    else if (c == none)
+                        r += 0.0;
+                    else
+                        r -= score_e;
+                }
+            }
+            // SCORE TYPE F
+            for (int i = 0; i < 4; i++)
+            {
+                Position p = ScoreMap::f[i];
+                if (p.x == x && p.y == y)
+                {
+                    Piece c = board.getPiece(Position(x, y));
+                    if (c == color)
+                        r += score_f;
+                    else if (c == none)
+                        r += 0.0;
+                    else
+                        r -= score_f;
                 }
             }
         }
     }
-    return r / 40;
+    return r / 40.0;
+}
+
+using namespace Reversi; // 評価関数を定義
+float evaluate(Board board, Piece color)
+{
+    float score = 0;
+    float count_score = (float)board.countPiece(color) / 64;
+    float cell_score = evaluate_cell_types(board, color);
+    return cell_score * 4 + count_score;
 }
 
 using namespace Reversi;

@@ -54,17 +54,17 @@ namespace Reversi
             for (int i = 0; i < enemy_placeable_positions.size(); i++)
             {
                 Board b = Board(board);
-                b.place(enemy_placeable_positions[i], enemy_color);    //とりあえず設置してみる。
-                float v = (0 - (evaluation_function(b, color))) * 0.8; //評価する(負の値に変える。)
+                b.place(enemy_placeable_positions[i], enemy_color); //とりあえず設置してみる。
+                float v = (0 - (evaluation_function(b, color)));    //評価する(負の値に変える。)
                 if (now_value >= v)
                 { // 最小値にしたいのでこうする
                     now_value = v;
                     best_position = enemy_placeable_positions[i];
                 }
             }
-            board.place(best_position, enemy_color);            // 設置を確定。
-            r += now_value;                                     //加算する。
-            r += this->evaluate_board(board, color, count) / 3; //再起的に計算
+            board.place(best_position, enemy_color);                       // 設置を確定。
+            r += now_value;                                                //加算する。
+            r += this->evaluate_board(board, color, count) * magnifcation; //再起的に計算
         }
         else
         {

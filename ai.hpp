@@ -7,14 +7,17 @@ namespace Reversi
     class AI
     {
     public:
+        //パラメータ
+        float magnifcation = 1.0; //後手重視の倍率。 1.0より小さければ先手重視, 1.0より大きければ後手重視となる。
+
         float (*evaluation_function)(Board board, Piece color); //評価関数
         AI(float (*efunc)(Board board, Piece color))            // コンストラクタ
         {
             evaluation_function = efunc; //評価関数ポインタを代入。
         }
-        float evaluate_position(Board board, Position position, Piece color);     //1マスを評価する。
-        float evaluate_board(Board board, Piece color, int count = 32);           //ボード全体を評価する (intは何手先まで読むか)
-        Position predict_best_position(Board board, Piece color, int count = 32); //最適な位置を探索(計算)する (intは何手先まで読むか)
+        float evaluate_position(Board board, Position position, Piece color);    //1マスを評価する。
+        float evaluate_board(Board board, Piece color, int count = 5);           //ボード全体を評価する (intは何手先まで読むか)
+        Position predict_best_position(Board board, Piece color, int count = 5); //最適な位置を探索(計算)する (intは何手先まで読むか)
 
     private:
         static Piece

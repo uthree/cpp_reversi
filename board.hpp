@@ -51,7 +51,6 @@ namespace Reversi
         bool checkPlaceableAnywhere();            //どこかに置くことができるか調べる(色は問わない。)
         int countPiece(Piece color);              // 石の数を数える。
 
-        // TODO: これらの関数の実装
         int countPlaceablePositions(Piece color); // 石を置ける場所の数を数える
         int countPlaceableCorner(Piece color);    //角を置ける場所の数を数える。
         int countCorner(Piece color);             //角の数を数える。

@@ -334,6 +334,43 @@ namespace Reversi
         return r;
     }
 
+    int Board::countPlaceablePositions(Piece color)
+    {
+        return searchPlaceablePositions(color).size();
+    }
+
+    int Board::countCorner(Piece color)
+    {
+        int c = 0;
+        if (getPiece(0, 0) == color)
+            c++;
+        if (getPiece(7, 0) == color)
+            c++;
+        if (getPiece(0, 7) == color)
+            c++;
+        if (getPiece(7, 7) == color)
+            c++;
+        return c;
+    }
+
+    int Board::countPlaceableCorner(Piece color)
+    {
+        int c = 0;
+        std::vector<Position> positions = searchPlaceablePositions(color);
+        for (int i = 0; i < positions.size(); i++)
+        {
+            if (positions[i].x == 0 && positions[i].y == 0)
+                c++;
+            if (positions[i].x == 7 && positions[i].y == 0)
+                c++;
+            if (positions[i].x == 0 && positions[i].y == 7)
+                c++;
+            if (positions[i].x == 7 && positions[i].y == 7)
+                c++;
+        }
+        return c;
+    }
+
     Piece Board::getPiece(Position position)
     {
         //std::cout << "getPiece" << position.x << position.y << std::endl;

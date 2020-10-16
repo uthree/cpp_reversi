@@ -10,28 +10,28 @@
 using namespace Reversi;
 float evaluate_func1(Board board, Piece color)
 {
-    float sc = (float)board.countPiece(color) + board.searchPlaceablePositions(color).size();
+    float sc = (float)board.countPiece(color) + board.searchPlaceablePositions(color).size() * 0.1;
     if (board.getPiece(Position(0, 0)) == color)
     {
-        sc += 20.0;
+        sc += 50.0;
     }
     if (board.getPiece(Position(7, 0)) == color)
     {
-        sc += 20.0;
+        sc += 50.0;
     }
     if (board.getPiece(Position(7, 7)) == color)
     {
-        sc += 20.0;
+        sc += 50.0;
     }
     if (board.getPiece(Position(0, 7)) == color)
     {
-        sc += 20.0;
+        sc += 50.0;
     }
     return sc;
 }
 
 using namespace Reversi;
-float evaluate_func2(Board board, Piece color) //いかなる場合においてもゼロを返す雑な関数
+float returnzero_func(Board board, Piece color) //いかなる場合においてもゼロを返す雑な関数
 {
     return 0;
 }
@@ -43,10 +43,10 @@ int main()
     Board board;
     AI bot_b(&evaluate_func1);
     bot_b.preloading_times = 3;
-    bot_b.magnifcation = 0.5;
-    AI bot_w(&evaluate_func2);
-    bot_w.preloading_times = 4;
-    bot_w.magnifcation = 0.5;
+    bot_b.magnifcation = 0.1;
+    AI bot_w(&evaluate_func1);
+    bot_w.preloading_times = 3;
+    bot_w.magnifcation = 0.1;
 
     while (board.checkPlaceableAnywhere())
     {

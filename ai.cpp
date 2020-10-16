@@ -26,8 +26,8 @@ namespace Reversi
             for (int i = 0; i < my_placeable_positions.size(); i++)
             {
                 Board b = Board(board);
-                b.place(my_placeable_positions[i], color);                 // とりあえず設置してみる。
-                float v = this->evaluate_board(board, enemy_color, count); // 評価
+                b.place(my_placeable_positions[i], color);                                                                // とりあえず設置してみる。
+                float v = (this->evaluate_board(board, color, count) * magnifcation + evaluation_function(board, color)); // 評価
                 if (now_value <= v)
                 { //最大値にしたいのでこう
                     now_value = v;
@@ -40,7 +40,7 @@ namespace Reversi
         }
         else if (board.checkPlaceableAnywhere(color))
         {
-            return evaluation_function(board, color) * magnifcation;
+            return evaluation_function(board, color);
         }
 
         // std::cout << board.toString(getEnemyColor(color)) << std::endl;
@@ -55,8 +55,8 @@ namespace Reversi
             for (int i = 0; i < enemy_placeable_positions.size(); i++)
             {
                 Board b = Board(board);
-                b.place(enemy_placeable_positions[i], enemy_color);                //とりあえず設置してみる。
-                float v = 0.0 - (this->evaluate_board(board, enemy_color, count)); //評価する(負数)
+                b.place(enemy_placeable_positions[i], enemy_color);                                                                         //とりあえず設置してみる。
+                float v = 0.0 - (this->evaluate_board(board, enemy_color, count) * magnifcation + evaluation_function(board, enemy_color)); //評価する(負数)
                 if (now_value >= v)
                 { // 最小値にしたいのでこうする
                     now_value = v;
@@ -69,7 +69,7 @@ namespace Reversi
         }
         else if (board.checkPlaceableAnywhere(color))
         {
-            return evaluation_function(board, color) * magnifcation;
+            return evaluation_function(board, color);
         }
 
         return r;

@@ -63,11 +63,11 @@ namespace ScoreMap
 float evaluate_cell_types(Board board, Piece color)
 {
     const float score_a = 1.0;
-    const float score_b = -0.9;
-    const float score_c = -0.2;
-    const float score_d = -0.8;
-    const float score_e = -0.1;
-    const float score_f = -0.1;
+    const float score_b = 0.8;
+    const float score_c = 0.9;
+    const float score_d = 0.0;
+    const float score_e = 0.8;
+    const float score_f = 0.1;
 
     float r = 0.0;
 
@@ -87,7 +87,7 @@ float evaluate_cell_types(Board board, Piece color)
                     else if (c == none)
                         r -= score_a * 0.0;
                     else
-                        r -= score_a;
+                        r -= score_a * 0.0;
                 }
             }
 
@@ -103,7 +103,7 @@ float evaluate_cell_types(Board board, Piece color)
                     else if (c == none)
                         r -= score_b * 0.0;
                     else
-                        r -= score_b;
+                        r -= score_b * 1.0;
                 }
             }
 
@@ -119,7 +119,7 @@ float evaluate_cell_types(Board board, Piece color)
                     else if (c == none)
                         r -= score_c * 0.0;
                     else
-                        r -= score_c;
+                        r -= score_c * 0.0;
                 }
             }
 
@@ -135,7 +135,7 @@ float evaluate_cell_types(Board board, Piece color)
                     else if (c == none)
                         r -= score_d * 0.0;
                     else
-                        r -= score_d;
+                        r -= score_d * 1.0;
                 }
             }
 
@@ -151,7 +151,7 @@ float evaluate_cell_types(Board board, Piece color)
                     else if (c == none)
                         r -= score_e * 0.0;
                     else
-                        r -= score_e;
+                        r -= score_e * 0.5;
                 }
             }
             // SCORE TYPE F
@@ -166,7 +166,7 @@ float evaluate_cell_types(Board board, Piece color)
                     else if (c == none)
                         r -= score_f * 0.0;
                     else
-                        r -= score_f;
+                        r -= score_f * 0.2;
                 }
             }
         }
@@ -181,21 +181,39 @@ float evaluate(Board board, Piece color)
     float count_score = (float)board.countPiece(color) / 64;                   //石の制圧率
     float cell_score = evaluate_cell_types(board, color);                      //　マス目ごとのスコア
     float placeable_score = board.searchPlaceablePositions(color).size() / 64; // 設置できるマスの数(選択肢の数)
-    return cell_score + count_score + placeable_score;
+    return cell_score + count_score * 3 + placeable_score * 3;
+}
+
+getEnemyColor(Piece color)
+{
+    if (color == black)
+        return white;
+    if (color == white)
+        return black;
+    return none;
+}
+
+float evaluate2(Board board, Piece color)
+{
+    return (float)board.countPiece(color);
 }
 
 using namespace Reversi;
 using namespace std;
 int main()
 {
-    Board board;           // 初期化
-    AI ai = AI(&evaluate); // AI初期化
-    ai.magnifcation = 0.8;
+    Board board;            // 初期化
+    AI ai = AI(&evaluate2); // AI初期化
+    ai.magnifcation = 0.5;
 
     while (board.checkPlaceableAnywhere()) //どちらかが設置不可能になるまで繰り返す。
     {
+
         // 評価値
         cout << "EV: " << round(ai.evaluate_board(board, white) * 100) / 100 << endl;
+        if (!board.checkPlaceableAnywhere(black))
+            break;
+
         cout << board.toString(black) << endl;
     label_input:
         string s;
@@ -208,7 +226,7 @@ int main()
             //不正な値だったら戻る
             if (x > 7 || x < 0 || y > 7 || y < 0)
             {
-                cout << "不正な値です。入力し直してください。" << endl;
+                cout << "盤面の外にアクセスしようとしないでください。" << endl;
                 goto label_input;
             }
         }
@@ -226,9 +244,13 @@ int main()
         if (!board.checkPlaceableAnywhere())
             break;
         board.place(Position(x, y), black);
+
         cout << board.toString(white) << endl;
-        Position pos = ai.predict_best_position(board, white, 20);
-        cout << "AI_ANS:" << pos.x << pos.y << endl;
+
+        if (!board.checkPlaceableAnywhere(white))
+            break;
+        Position pos = ai.predict_best_position(board, white, 30);
+        cout << "AI_ANS: " << pos.x << pos.y << endl;
         board.place(pos, white);
     }
     //勝利判定

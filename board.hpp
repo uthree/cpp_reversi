@@ -69,10 +69,10 @@ namespace Reversi
         board_map[4][3] = black;
         board_map[3][4] = black;
 
-        piece_black_str = "\e[0m\e[42m\e[30mb\e[0m";
-        piece_white_str = "\e[0m\e[42m\e[37mw\e[0m";
-        piece_none_str = "\e[0m\e[42m \e[0m";
-        piece_placeable_str = "\e[0m\e[42m\e[33m.\e[0m";
+        piece_black_str = "\e[0m\e[42m\e[30m●\e[0m";
+        piece_white_str = "\e[0m\e[42m\e[37m●\e[0m";
+        piece_none_str = "\e[0m\e[44m\e[32m■\e[0m";
+        piece_placeable_str = "\e[0m\e[44m\e[32m□\e[0m";
         cursor_str = "\e[0m\e[42m\e[33m@\e[0m";
     }
 

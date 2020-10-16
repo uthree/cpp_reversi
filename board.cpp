@@ -18,9 +18,9 @@ namespace Reversi
     }
     bool Board::checkPlaceableAnywhere(Piece color)
     {
-        for (int y = 0; y < 7; y++)
+        for (int y = 0; y < 8; y++)
         {
-            for (int x = 0; x < 7; x++)
+            for (int x = 0; x < 8; x++)
             {
                 if (checkPlaceable(Position(x, y), color))
                     return true;
@@ -35,9 +35,9 @@ namespace Reversi
     int Board::countPiece(Piece color)
     {
         int r = 0;
-        for (int y = 0; y < 7; y++)
+        for (int y = 0; y < 8; y++)
         {
-            for (int x = 0; x < 7; x++)
+            for (int x = 0; x < 8; x++)
             {
                 if (this->getPiece(Position(x, y)) == color)
                     r++;
@@ -48,9 +48,9 @@ namespace Reversi
     std::vector<Position> Board::searchPlaceablePositions(Piece color) // なんか知らんが二倍の値が出てくる。
     {
         std::vector<Position> r;
-        for (int y = 0; y < 7; y++)
+        for (int y = 0; y < 8; y++)
         {
-            for (int x = 0; x < 7; x++)
+            for (int x = 0; x < 8; x++)
             {
                 if (this->checkPlaceable(Position(x, y), color))
                     r.push_back(Position(x, y));
@@ -269,7 +269,7 @@ namespace Reversi
         //std::cout << "getPiece" << position.x << position.y << std::endl;
         //範囲外へのアクセスを防ぐ
         if (position.x > 7 || position.x < 0 || position.y > 7 || position.y < 0)
-            throw "範囲外にアクセスしようとするな。";
+            return outside;
         return board_map[position.y][position.x];
     }
 
@@ -277,9 +277,8 @@ namespace Reversi
     {
         //std::cout << "setPiece" << position.x << position.y << std::endl;
         //範囲外へのアクセスを防ぐ
-        if (position.x > 7 || position.x < 0 || position.y > 7 || position.y < 0)
-            throw "範囲外にアクセスしようとするな。";
-        board_map[position.y][position.x] = piece;
+        if (!(position.x > 7 || position.x < 0 || position.y > 7 || position.y < 0))
+            board_map[position.y][position.x] = piece;
     }
 } // namespace Reversi
 

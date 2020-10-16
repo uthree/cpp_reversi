@@ -7,7 +7,8 @@ namespace Reversi
     {
         none = 0,
         black = 1,
-        white = 2
+        white = 2,
+        outside = 3, // 盤面外
     };
 } // namespace Reversi
 

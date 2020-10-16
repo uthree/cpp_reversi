@@ -8,7 +8,7 @@ namespace Reversi
     {
     public:
         //パラメータ
-        float magnifcation = 0.2; //後手重視の倍率。 とりあえず0.1~0.2くらいがちょうどいい？
+        float magnifcation = 1.0; //後手重視の倍率。 とりあえず0.1~0.2くらいがちょうどいい？
 
         float (*evaluation_function)(Board board, Piece color); //評価関数
         AI(float (*efunc)(Board board, Piece color))            // コンストラクタ

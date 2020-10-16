@@ -34,20 +34,30 @@ namespace Reversi
         Board(const Board &other);
 
         //メソッド
-        bool checkPlaceable(Position position, Piece piece_color);                             //　特定の座標に石を置けるかチェックする。
+        bool checkPlaceable(Position position, Piece piece_color); //　特定の座標に石を置けるかチェックする。
+        bool checkPlaceable(int x, int y, Piece piece_color);      //オーバーロード
+
         std::vector<Position> searchPlaceableDirections(Position position, Piece piece_color); //　石を置ける方向をvectorで返す。
-        void place(Position position, Piece piece_color);                                      // 設置処理
-        std::string toString();                                                                //文字列化 (ガイドなし)
-        std::string toString(Piece guide_color);                                               //　文字列化(ガイド付き)
-        std::string toString(Piece guide_color, Position cursor);                              // 文字列化(カーソル, ガイド付き)
-        bool checkPlaceableAnywhere(Piece color);                                              //どこかに置くことができるか調べる(falseだったらどこにもおけない。)、色指定
-        bool checkPlaceableAnywhere();                                                         //どこかに置くことができるか調べる(色は問わない。)
-        int countPiece(Piece color);                                                           // 石の数を数える。
-        std::vector<Position> searchPlaceablePositions(Piece color);                           // 設置可能な位置を列挙
+        std::vector<Position> searchPlaceableDirections(int x, int y, Piece piece_color);      //オーバーロード
+
+        void place(Position position, Piece piece_color); // 設置処理
+        void place(int x, int y, Piece piece_color);      //オーバーロード
+
+        std::string toString();                                   //文字列化 (ガイドなし)
+        std::string toString(Piece guide_color);                  //　文字列化(ガイド付き)
+        std::string toString(Piece guide_color, Position cursor); // 文字列化(カーソル, ガイド付き)
+
+        bool checkPlaceableAnywhere(Piece color);                    //どこかに置くことができるか調べる(falseだったらどこにもおけない。)、色指定
+        bool checkPlaceableAnywhere();                               //どこかに置くことができるか調べる(色は問わない。)
+        int countPiece(Piece color);                                 // 石の数を数える。
+        std::vector<Position> searchPlaceablePositions(Piece color); // 設置可能な位置を列挙
 
         //単純なアクセサ群
-        Piece getPiece(Position position);                   //　座標からどうなってるか調べる。
-        void setPiece(Position Position, Piece Piece_color); //　任意の座標に任意の石を配置する。または石を除去する.
+        Piece getPiece(Position position); //　座標からどうなってるか調べる。
+        Piece getPiece(int x, int y);      //オーバーロード
+
+        void setPiece(Position Position, Piece piece_color); //　任意の座標に任意の石を配置する。または石を除去する.
+        void setPiece(int x, int y, Piece piece_color);      // オーバーロード
 
         //オペレータ
         //Board operator=(Board *other);

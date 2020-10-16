@@ -63,11 +63,11 @@ namespace ScoreMap
 float evaluate_cell_types(Board board, Piece color)
 {
     const float score_a = 1.0;
-    const float score_b = -0.8;
-    const float score_c = 0.1;
-    const float score_d = -0.8;
-    const float score_e = 0.1;
-    const float score_f = 0.1;
+    const float score_b = -0.04;
+    const float score_c = 0.01;
+    const float score_d = -0.4;
+    const float score_e = 0.02;
+    const float score_f = 0.01;
 
     float r = 0.0;
 
@@ -85,7 +85,7 @@ float evaluate_cell_types(Board board, Piece color)
                     if (c == color)
                         r += score_a;
                     else if (c == none)
-                        r -= score_a * 0.0;
+                        r -= score_a * 0.5;
                     else
                         r -= score_a * 1.0;
                 }
@@ -101,7 +101,7 @@ float evaluate_cell_types(Board board, Piece color)
                     if (c == color)
                         r += score_b;
                     else if (c == none)
-                        r -= score_b * 0.0;
+                        r -= score_b * 0.2;
                     else
                         r -= score_b * 1.0;
                 }
@@ -117,7 +117,7 @@ float evaluate_cell_types(Board board, Piece color)
                     if (c == color)
                         r += score_c;
                     else if (c == none)
-                        r -= score_c * 0.0;
+                        r -= score_c * 0.2;
                     else
                         r -= score_c * 1.0;
                 }
@@ -133,7 +133,7 @@ float evaluate_cell_types(Board board, Piece color)
                     if (c == color)
                         r += score_d;
                     else if (c == none)
-                        r -= score_d * 0.0;
+                        r -= score_d * 0.2;
                     else
                         r -= score_d * 1.0;
                 }
@@ -181,20 +181,28 @@ float evaluate(Board board, Piece color)
     float count_score = (float)board.countPiece(color) / 64;                   //石の制圧率
     float cell_score = evaluate_cell_types(board, color);                      //　マス目ごとのスコア
     float placeable_score = board.searchPlaceablePositions(color).size() / 64; // 設置できるマスの数(選択肢の数)
-    return cell_score * 2 + count_score + placeable_score;
+    return cell_score * 20 + count_score + placeable_score * 2;
 }
 
 float evaluate2(Board board, Piece color)
 {
-    return (float)board.countPiece(color);
+    float sc = (float)board.countPiece(color) + board.searchPlaceablePositions(color).size();
+    if (board.checkPlaceable(Position(0, 0), color) || board.checkPlaceable(Position(0, 7), color) || board.checkPlaceable(Position(7, 0), color) || board.checkPlaceable(Position(7, 7), color))
+    {
+        sc += 100.0;
+    }
+    if (board.getPiece(Position(0, 0)) == color || board.getPiece(Position(7, 7)) == color || board.getPiece(Position(0, 7)) == color || board.getPiece(Position(7, 0)) == color)
+    {
+        sc += 500.0;
+    }
 }
 
 using namespace Reversi;
 using namespace std;
 int main()
 {
-    Board board;           // 初期化
-    AI ai = AI(&evaluate); // AI初期化
+    Board board;            // 初期化
+    AI ai = AI(&evaluate2); // AI初期化
     ai.magnifcation = 2.0;
 
     while (board.checkPlaceableAnywhere()) //どちらかが設置不可能になるまで繰り返す。

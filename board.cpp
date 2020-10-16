@@ -10,12 +10,71 @@ namespace Reversi
 {
     bool Board::checkPlaceable(Position pos, Piece color)
     {
-        //TODO: 最適化
-        auto direction = searchPlaceableDirections(pos, color);
-        if (direction.size() > 0 && this->getPiece(pos) == none)
-            return true;
+        bool flag = false;
+        //　相手の色を確認しておく。
+        Piece enemy_color;
+        if (color == black)
+            enemy_color = white;
+        if (color == white)
+            enemy_color = black;
+
+        // そもそも既に石が置いてある場合
+        if (getPiece(pos) != none)
+        {
+            return false;
+        }
+        //outside
+        if (getPiece(pos) == outside)
+        {
+            return false;
+        }
+        // 8方向を探索する。
+        for (int i = 0; i < 8; i++)
+        {
+            Position direction = eight_directions[i]; //今調べてる方向
+
+            //端まで行くか置きたい色と同じ色が検出されるか何もないところに当たるまで
+            flag = false;
+            for (int d = 1; d < 8; d++)
+            {
+                Position checkpos = direction * d + pos;
+
+                // 端の場合はループを抜ける
+                if (checkpos.x > 7 || checkpos.x < 0)
+                    break;
+                if (checkpos.y > 7 || checkpos.y < 0)
+                    break;
+                //何もない
+                if (getPiece(checkpos) == none)
+                {
+                    break;
+                }
+
+                // 相手の色見つけた
+                if (getPiece(checkpos) == enemy_color)
+                {
+                    flag = true;
+                }
+                if (getPiece(checkpos) == color && flag == false) //自分と同じ色でfagがfalse
+                {
+                    break; //ひっくり返せないので無視する。
+                }
+                //2回目のループ、かつ自分の色がきたら設置可能な方向とする。
+                if (getPiece(checkpos) == color && d >= 2 && flag == true)
+                {
+                    return true; //発見したので値を返す。
+                }
+            }
+        }
+        // 値を返す
         return false;
     }
+
+    bool Board::checkPlaceable(int x, int y, Piece color)
+    {
+        checkPlaceable(Position(x, y), color);
+    }
+
     bool Board::checkPlaceableAnywhere(Piece color)
     {
         for (int y = 0; y < 8; y++)
@@ -28,6 +87,7 @@ namespace Reversi
         }
         return false;
     }
+
     bool Board::checkPlaceableAnywhere()
     {
         return (checkPlaceableAnywhere(white) || checkPlaceableAnywhere(black));
@@ -45,7 +105,7 @@ namespace Reversi
         }
         return r;
     }
-    std::vector<Position> Board::searchPlaceablePositions(Piece color) // なんか知らんが二倍の値が出てくる。
+    std::vector<Position> Board::searchPlaceablePositions(Piece color)
     {
         std::vector<Position> r;
         for (int y = 0; y < 8; y++)
@@ -58,6 +118,7 @@ namespace Reversi
         }
         return r;
     }
+
     std::vector<Position> Board::searchPlaceableDirections(Position pos, Piece color)
     {
         //ベクトルを初期化
@@ -119,6 +180,11 @@ namespace Reversi
         return placeable_directions;
     }
 
+    std::vector<Position> Board::searchPlaceableDirections(int x, int y, Piece color)
+    {
+        return searchPlaceableDirections(Position(x, y), color);
+    }
+
     void Board::place(Position pos, Piece color) //設置処理。 checkPlaceableがtrueになっていることが前提。
     {
         std::vector<Position> placeable_directions = searchPlaceableDirections(pos, color);
@@ -150,6 +216,10 @@ namespace Reversi
                 setPiece(checkpos, color);
             }
         }
+    }
+    void Board::place(int x, int y, Piece color)
+    {
+        return place(Position(x, y), color);
     }
 
     std::string Board::toString() // 盤面を文字列に変換
@@ -273,12 +343,22 @@ namespace Reversi
         return board_map[position.y][position.x];
     }
 
+    Piece Board::getPiece(int x, int y)
+    {
+        return getPiece(Position(x, y));
+    }
+
     void Board::setPiece(Position position, Piece piece)
     {
         //std::cout << "setPiece" << position.x << position.y << std::endl;
         //範囲外へのアクセスを防ぐ
         if (!(position.x > 7 || position.x < 0 || position.y > 7 || position.y < 0))
             board_map[position.y][position.x] = piece;
+    }
+
+    void Board::setPiece(int x, int y, Piece piece)
+    {
+        setPiece(Position(x, y), piece);
     }
 } // namespace Reversi
 

@@ -19,7 +19,7 @@ namespace Reversi
         if (count > 0 && board.checkPlaceableAnywhere(color))
         {
             //自分の最善手を探索。
-            float now_value = -65535;                                                             // 最大値になるようにする。
+            float now_value = __FLT_MIN_10_EXP__;                                                 // 最大値になるようにする。
             std::vector<Position> my_placeable_positions = board.searchPlaceablePositions(color); // 自分が置ける場所全てを列挙
             Position best_position = my_placeable_positions.at(0);                                // 最善の位置
 
@@ -50,7 +50,7 @@ namespace Reversi
             //相手側の最善手を探索
             std::vector<Position> enemy_placeable_positions = board.searchPlaceablePositions(enemy_color); //相手が置ける場所全てを列挙
             Position best_position = enemy_placeable_positions.at(0);
-            float now_value = 65535; // 最小値になってほしい
+            float now_value = __FLT_MAX_10_EXP__; // 最小値になってほしい
 
             for (int i = 0; i < enemy_placeable_positions.size(); i++)
             {
@@ -77,6 +77,8 @@ namespace Reversi
 
     Position AI::predict_best_position(Board board, Piece color, int count)
     {
+        if (count == 0)
+            count = preloading_times;
         std::vector<Position> placeable_positions = board.searchPlaceablePositions(color);
         if (placeable_positions.size() == 0)
             return Position(-1, -1);
@@ -94,7 +96,7 @@ namespace Reversi
                 best_position = p;
             }
         }
-        std::cout << best_score << std::endl;
+        //std::cout << best_score << std::endl;
         return best_position;
     }
 

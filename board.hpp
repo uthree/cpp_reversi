@@ -47,9 +47,15 @@ namespace Reversi
         std::string toString(Piece guide_color);                  //　文字列化(ガイド付き)
         std::string toString(Piece guide_color, Position cursor); // 文字列化(カーソル, ガイド付き)
 
-        bool checkPlaceableAnywhere(Piece color);                    //どこかに置くことができるか調べる(falseだったらどこにもおけない。)、色指定
-        bool checkPlaceableAnywhere();                               //どこかに置くことができるか調べる(色は問わない。)
-        int countPiece(Piece color);                                 // 石の数を数える。
+        bool checkPlaceableAnywhere(Piece color); //どこかに置くことができるか調べる(falseだったらどこにもおけない。)、色指定
+        bool checkPlaceableAnywhere();            //どこかに置くことができるか調べる(色は問わない。)
+        int countPiece(Piece color);              // 石の数を数える。
+
+        // TODO: これらの関数の実装
+        int countPlaceablePositions(Piece color); // 石を置ける場所の数を数える
+        int countPlaceableCorner(Piece color);    //角を置ける場所の数を数える。
+        int countCorner(Piece color);             //角の数を数える。
+
         std::vector<Position> searchPlaceablePositions(Piece color); // 設置可能な位置を列挙
 
         //単純なアクセサ群

@@ -72,7 +72,7 @@ namespace Reversi
 
     bool Board::checkPlaceable(int x, int y, Piece color)
     {
-        checkPlaceable(Position(x, y), color);
+        return checkPlaceable(Position(x, y), color);
     }
 
     bool Board::checkPlaceableAnywhere(Piece color)

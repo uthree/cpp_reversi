@@ -26,14 +26,15 @@ namespace Reversi
             for (int i = 0; i < my_placeable_positions.size(); i++)
             {
                 Board b = Board(board);
-                b.place(my_placeable_positions[i], color);                                                                // とりあえず設置してみる。
-                float v = (this->evaluate_board(board, color, count) * magnifcation + evaluation_function(board, color)); // 評価
+                b.place(my_placeable_positions.at(i), color); // とりあえず設置してみる。
+                float v = evaluation_function(b, color);      // 評価
                 if (now_value <= v)
                 { //最大値にしたいのでこう
                     now_value = v;
-                    best_position = my_placeable_positions[i];
+                    best_position = my_placeable_positions.at(i);
                     //std::cout << "MAX FND" << v << std::endl;
                 }
+                r += v;
             }
             board.place(best_position, color); //設置を確定
             r += now_value;                    //加算する
@@ -55,23 +56,28 @@ namespace Reversi
             for (int i = 0; i < enemy_placeable_positions.size(); i++)
             {
                 Board b = Board(board);
-                b.place(enemy_placeable_positions[i], enemy_color);                                                                         //とりあえず設置してみる。
-                float v = 0.0 - (this->evaluate_board(board, enemy_color, count) * magnifcation + evaluation_function(board, enemy_color)); //評価する(負数)
+                b.place(enemy_placeable_positions.at(i), enemy_color); //とりあえず設置してみる。
+                float v = 0.0 - evaluation_function(b, enemy_color);   //評価する(負数)
                 if (now_value >= v)
                 { // 最小値にしたいのでこうする
                     now_value = v;
-                    best_position = enemy_placeable_positions[i];
+                    best_position = enemy_placeable_positions.at(i);
                     //  "MIN FND" << v << std::endl;
                 }
+                r += v;
             }
             board.place(best_position, enemy_color); // 設置を確定。
             r -= now_value;                          //減算する。
         }
-        else if (board.checkPlaceableAnywhere(color))
+        else if (board.checkPlaceableAnywhere())
         {
-            return evaluation_function(board, color);
+            return evaluation_function(board, enemy_color);
         }
 
+        if (count > 0)
+        {
+            r += evaluate_board(board, color, count) * magnifcation;
+        }
         return r;
     }
 
@@ -87,16 +93,15 @@ namespace Reversi
         for (int i = 0; i < placeable_positions.size(); i++)
         {
             Board b = Board(board); //boardをコピー
-            Position p = placeable_positions[i];
+            Position p = placeable_positions.at(i);
             b.place(p, color);
-            float s = this->evaluate_board(b, color, count);
+            float s = evaluate_board(b, color, count);
             if (best_score <= s)
             {
                 best_score = s;
                 best_position = p;
             }
         }
-        //std::cout << best_score << std::endl;
         return best_position;
     }
 

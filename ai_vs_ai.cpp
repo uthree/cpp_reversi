@@ -8,11 +8,24 @@ using namespace std;
 
 float evaluate_board_1(Board board, Piece color) // 多少マシな評価関数
 {
+    //序盤なら乱数を返す
+    if (board.countPiece(none) > 55)
+        return (float)rand();
+
+    Piece enemy_color;
+    if (color == black)
+        enemy_color = white;
+    if (color == white)
+        enemy_color = black;
+
     float f = 0;
     f += board.countPiece(color);
-    f += board.countPlaceablePositions(color) * 0.9;
-    f += board.countCorner(color) * 400;
-    f += board.countPlaceableCorner(color) * 20;
+    f += board.countPlaceablePositions(color) * 0.8;
+    f += board.countCorner(color) * 10;
+    f += board.countPlaceableCorner(color) * 8;
+    f -= board.countPiece(enemy_color);
+    f -= board.countCorner(enemy_color) * 10;
+    f -= board.countPlaceableCorner(enemy_color) * 8;
     return f;
 }
 
@@ -35,10 +48,10 @@ int main(int argc, char const *argv[])
             Board board = Board(); //盤面の初期化
         AI ai_1 = AI(evaluate_board_1);
         ai_1.preloading_times = 10;
-        ai_1.magnifcation = 0.2;
-        AI ai_2 = AI(evaluate_board_2);
-        ai_1.preloading_times = 1;
         ai_1.magnifcation = 0.8;
+        AI ai_2 = AI(evaluate_board_2);
+        ai_1.preloading_times = 10;
+        ai_1.magnifcation = 0.1;
 
         AI first_player = ai_1;
         AI second_player = ai_2;
@@ -59,7 +72,7 @@ int main(int argc, char const *argv[])
                 board.place(p, white);
             }
         }
-        //cout << board.toString() << endl;
+        cout << board.toString() << endl;
         //cout << board.countPiece(black) << " : " << board.countPiece(white) << endl;
 
         // 勝敗判定。

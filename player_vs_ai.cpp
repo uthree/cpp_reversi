@@ -5,15 +5,29 @@
 #include <unistd.h>
 #include <string>
 #include <cmath>
+#include <stdlib.h>
 
 using namespace Reversi;
 float evaluate_func1(Board board, Piece color)
 {
+    //序盤なら乱数を返す
+    if (board.countPiece(none) > 55)
+        return (float)rand();
+
+    Piece enemy_color;
+    if (color == black)
+        enemy_color = white;
+    if (color == white)
+        enemy_color = black;
+
     float f = 0;
     f += board.countPiece(color);
-    f += board.countPlaceablePositions(color) * 0.9;
-    f += board.countCorner(color) * 40;
-    f += board.countPlaceableCorner(color) * 20;
+    f += board.countPlaceablePositions(color) * 0.8;
+    f += board.countCorner(color) * 10;
+    f += board.countPlaceableCorner(color) * 8;
+    f -= board.countPiece(enemy_color);
+    f -= board.countCorner(enemy_color) * 10;
+    f -= board.countPlaceableCorner(enemy_color) * 8;
     return f;
 }
 
@@ -21,6 +35,7 @@ using namespace Reversi;
 using namespace std;
 int main()
 {
+    srand(time(NULL)); //乱数の初期化
     Board board;                 // 初期化
     AI ai = AI(&evaluate_func1); // AI初期化
     ai.magnifcation = 0.8;
